@@ -1,6 +1,7 @@
 #!/bin/sh
 
 prefix=`echo $1`
+branch=`echo $2`
 
 here=`pwd .`
 
@@ -17,7 +18,7 @@ libcxxabi_src=${llvm_projects_src}/libcxxabi
 
 llvm_git=http://llvm.org/git
 
-echo ===== Building latest LLVM in base dir ${llvm_base} from ${llvm_git}
+echo ===== Building branch ${branch} of LLVM in base dir ${llvm_base} from ${llvm_git}
 
 test -d ${llvm_base} || mkdir -p ${llvm_base}
 test -d ${llvm_build} || mkdir ${llvm_build}
@@ -31,7 +32,8 @@ clone_or_update_repository() {
    echo  $'\n'Cloning or Updating ${repo_name}
    test -d ${repo_location} || git clone ${llvm_git}/${repo_name} ${repo_location}
    cd ${repo_location}
-   git pull origin master
+   git checkout ${branch}
+   git pull origin ${branch}
    cd ${here}
 }
 #
