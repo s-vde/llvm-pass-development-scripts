@@ -17,7 +17,7 @@ namespace
         {
             ++mFunctionCounter;
             llvm::errs() << "Hello: ";
-            llvm::errs().write_escaped(F.getName()) << std::endl;
+            llvm::errs().write_escaped(F.getName()) << "\n";
             return false;
         }
         
