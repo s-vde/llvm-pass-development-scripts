@@ -24,7 +24,7 @@ cmake ../ -DLLVM_DIR=${llvm_base}/build/lib/cmake/llvm
 make
 cd ${here}
 
-${llvm_bin}/clang++ -pthread -emit-llvm -Ilib/ -c ${program} -o ${program}.bc;
+${llvm_bin}/clang++ -pthread -emit-llvm -std=c++14 -Ilib/ -c ${program} -o ${program}.bc;
 ${llvm_bin}/opt -S -load pass/build/HelloWorldPass/LLVMHelloWorldPass.dylib -hello-world < ${program}.bc > ${program}.instrumented.bc
 ${llvm_bin}/clang++ ${program}.instrumented.bc lib/build/libHelloWorldLibrary.dylib -o ${program}.linked -rpath ./lib/build/
 ./${program}.linked

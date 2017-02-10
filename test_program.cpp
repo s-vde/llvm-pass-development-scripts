@@ -1,15 +1,28 @@
 
-int additor(int i)
+#include <vector>
+
+std::vector<int>& additor(std::vector<int>& vec)
 {
-    return ++i;
+    for (auto& element : vec)
+    {
+        ++element;
+    }
+    return vec;
 }
 
-int subtractor(int i)
+std::vector<int>& subtractor(std::vector<int>& vec)
 {
-    return --i;
+    for (auto& element : vec)
+    {
+        --element;
+    }
+    return vec;
 }
 
 int main()
 {
-    return additor(subtractor(0));
+    std::vector<int> vec(5, 0);
+    additor(subtractor(vec));
+    
+    return std::all_of(vec.begin(), vec.end(), [] (const auto& element) { return element == 0; });
 }

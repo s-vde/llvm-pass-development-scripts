@@ -1,6 +1,7 @@
 
 #include "llvm/IR/Function.h"
 #include "llvm/IR/Instruction.h"
+#include "llvm/IR/InstIterator.h"
 #include "llvm/IR/Module.h"
 #include "llvm/IR/IRBuilder.h"
 #include "llvm/Pass.h"
@@ -44,12 +45,16 @@ namespace
             // This check has to be in place in order to prevent hello_world from being instrumented
             if (function.getName().str() != "hello_world")
             {
-//                llvm::errs() << "Instrumenting: " << function.getName() << "\n";
-                Instruction* before = &function.front().front();
-                IRBuilder<> builder(before);
-                Value* arg = builder.CreateGlobalStringPtr(function.getName());
-                builder.CreateCall(hello_world_prototype, { arg });
-                ++mFunctionCounter;
+                llvm::errs() << "Instrumenting: " << function.getName() << "\n";
+                auto begin = llvm::inst_begin(function);
+                if (begin != llvm::inst_end(function))
+                {
+                    begin->dump();
+                    IRBuilder<> builder(&*begin);
+                    Value* arg = builder.CreateGlobalStringPtr(function.getName());
+                    builder.CreateCall(hello_world_prototype, { arg });
+                    ++mFunctionCounter;
+                }
             }
         }
         
